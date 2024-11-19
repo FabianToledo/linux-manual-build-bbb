@@ -53,3 +53,10 @@ if [ ! -d "${OUTDIR}/linux-output" ]; then
     # Find and copy dtb for am335x-boneblack
     cp -v "$(find ${OUTDIR}/linux/arch/${ARCH}/boot -name 'am335x-boneblack.dtb')" "${OUTDIR}/linux-output"
 fi
+
+if [ -d "${OUTDIR}/rootfs" ]; then
+    cd "${OUTDIR}/linux"
+    # Install modules
+    make ARCH=${ARCH} -j2 CROSS_COMPILE=${CROSS_COMPILE} INSTALL_MOD_PATH="${OUTDIR}/rootfs" modules_install
+    cp -v "${OUTDIR}/linux-output"/* "${OUTDIR}/rootfs/boot"
+fi
