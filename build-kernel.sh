@@ -17,6 +17,7 @@ KERNEL_REPO=${KERNEL_REPO:="git://git.kernel.org/pub/scm/linux/kernel/git/stable
 KERNEL_VERSION=${KERNEL_VERSION:="v6.6.62"}
 DEFCONFIG=multi_v7_defconfig
 SYSROOT=$(realpath $(${CROSS_COMPILE}gcc -print-sysroot))
+IMAGE_TYPE=zImage
 
 mkdir -p "${OUTDIR}"
 
@@ -40,13 +41,15 @@ if [ ! -d "${OUTDIR}/linux-output" ]; then
         cp -v "${DIR}/.kernelconfig" "${OUTDIR}/u-boot/.config"
     fi
     # Build kernel
-	make ARCH=${ARCH} -j2 CROSS_COMPILE=${CROSS_COMPILE} zImage
+	make ARCH=${ARCH} -j2 CROSS_COMPILE=${CROSS_COMPILE} ${IMAGE_TYPE}
     # Build modules
     make ARCH=${ARCH} -j2 CROSS_COMPILE=${CROSS_COMPILE} modules
     # Build device tree blobs
     make ARCH=${ARCH} CROSS_COMPILE=${CROSS_COMPILE} dtbs
 
     mkdir -p "${OUTDIR}/linux-output"
-    cp -v "${OUTDIR}/linux/arch/${ARCH}/boot/zImage" "${OUTDIR}/linux-output"
-    cp -v "${OUTDIR}/linux/arch/${ARCH}/boot/dts/ti/omap/am335x-boneblack.dtb" "${OUTDIR}/linux-output"
+    # Copy kernel image
+    cp -v "${OUTDIR}/linux/arch/${ARCH}/boot/${IMAGE_TYPE}" "${OUTDIR}/linux-output"
+    # Find and copy dtb for am335x-boneblack
+    cp -v "$(find ${OUTDIR}/linux/arch/${ARCH}/boot -name 'am335x-boneblack.dtb')" "${OUTDIR}/linux-output"
 fi
