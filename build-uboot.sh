@@ -41,6 +41,5 @@ if [ ! -d "${OUTDIR}/u-boot-output" ]; then
     mkdir -p "${OUTDIR}/u-boot-output"
     cp -v "${OUTDIR}/u-boot/MLO" "${OUTDIR}/u-boot-output"
     # This compilation includes the dtb in the u-boot-dtb.img file
-    cp -v "${OUTDIR}/u-boot/u-boot-dtb.img" "${OUTDIR}/u-boot-output"
+    cp -v "${OUTDIR}"/u-boot/*.img "${OUTDIR}/u-boot-output"
 fi
-
