@@ -71,3 +71,14 @@ if [ ! -f ${OUTDIR}/rootfs/bin/busybox ]; then
         cp -v "${SYSROOT}/lib/${FILE}" "${OUTDIR}/rootfs/lib"
     done
 fi
+
+if [ -d "${OUTDIR}/rootfs" ]; then
+    chmod 4755 "${OUTDIR}"/rootfs/bin/busybox
+    cp -v "${DIR}"/initrootfs/passwd "${OUTDIR}"/rootfs/etc
+    cp -v "${DIR}"/initrootfs/group "${OUTDIR}"/rootfs/etc
+    cp -v "${DIR}"/initrootfs/inittab "${OUTDIR}"/rootfs/etc
+    mkdir -p "${OUTDIR}"/rootfs/etc/init.d
+    cp -v "${DIR}"/initrootfs/rcS "${OUTDIR}"/rootfs/etc/init.d
+fi
+
+

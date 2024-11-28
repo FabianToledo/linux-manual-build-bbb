@@ -1,0 +1,11 @@
+::sysinit:/etc/init.d/rcS
+
+::restart:/sbin/init
+::respawn:/sbin/syslogd -n
+# Descomentar si se quiere saltear login y comentar la línea de getty
+#::askfirst:/bin/sh
+::respawn:/sbin/getty 115200 console
+
+::ctrlaltdel:/sbin/reboot
+::shutdown:/sbin/swapoff -a
+::shutdown:/bin/umount -a -r

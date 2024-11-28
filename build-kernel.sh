@@ -36,9 +36,9 @@ if [ ! -d "${OUTDIR}/linux-output" ]; then
     if [ ! -f "${DIR}/.kernelconfig" ]; then
         make ARCH=${ARCH} CROSS_COMPILE=${CROSS_COMPILE} ${DEFCONFIG}
         make ARCH=${ARCH} CROSS_COMPILE=${CROSS_COMPILE} menuconfig
-        cp -v "${OUTDIR}/u-boot/.config" "${DIR}/.kernelconfig"
+        cp -v "${OUTDIR}/linux/.config" "${DIR}/.kernelconfig"
     else
-        cp -v "${DIR}/.kernelconfig" "${OUTDIR}/u-boot/.config"
+        cp -v "${DIR}/.kernelconfig" "${OUTDIR}/linux/.config"
     fi
     # Build kernel
 	make ARCH=${ARCH} -j2 CROSS_COMPILE=${CROSS_COMPILE} ${IMAGE_TYPE}
