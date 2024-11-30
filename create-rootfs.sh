@@ -27,7 +27,7 @@ then
     echo "Creating necessary base directories"
     mkdir -p "${OUTDIR}/rootfs"
     cd "${OUTDIR}/rootfs"
-    mkdir -p bin boot dev etc home lib lib64 proc sbin tmp usr/bin usr/lib usr/sbin var/log
+    mkdir -p bin boot dev etc home lib lib64 proc sbin sys tmp usr/bin usr/lib usr/sbin var/log var/run
 fi
 
 cd "${OUTDIR}"
@@ -70,15 +70,16 @@ if [ ! -f ${OUTDIR}/rootfs/bin/busybox ]; then
     for FILE in ${SHRD_LIBS}; do
         cp -v "${SYSROOT}/lib/${FILE}" "${OUTDIR}/rootfs/lib"
     done
+
 fi
 
 if [ -d "${OUTDIR}/rootfs" ]; then
     chmod 4755 "${OUTDIR}"/rootfs/bin/busybox
-    cp -v "${DIR}"/initrootfs/passwd "${OUTDIR}"/rootfs/etc
-    cp -v "${DIR}"/initrootfs/group "${OUTDIR}"/rootfs/etc
-    cp -v "${DIR}"/initrootfs/inittab "${OUTDIR}"/rootfs/etc
-    mkdir -p "${OUTDIR}"/rootfs/etc/init.d
-    cp -v "${DIR}"/initrootfs/rcS "${OUTDIR}"/rootfs/etc/init.d
+    cp -va "${DIR}"/initrootfs/* "${OUTDIR}"/rootfs
+    
+    echo "Copying plugins for networking"
+    cp -va "${SYSROOT}"/lib/libnss* "${OUTDIR}"/rootfs/lib
+    cp -va "${SYSROOT}"/lib/libresolv* "${OUTDIR}"/rootfs/lib
 fi
 
 

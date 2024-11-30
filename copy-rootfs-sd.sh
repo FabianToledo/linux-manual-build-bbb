@@ -1,5 +1,15 @@
 #!/bin/bash
 
+if [ $1 ]; then
+	if [ $1 = "-h" -o $1 = "--help" ]; then
+		echo "usage:"
+		echo "    $0 [DISK] [DIR]"
+		echo "    DISK: path/to/mount"
+		echo "    DIR: staging dir"
+		exit 1
+	fi
+fi
+
 DEFAULT_DISK="/media/${USER}/rootfs"
 DISK=${1:-$DEFAULT_DISK}
 if [ ! -d "${DISK}" ]; then
